@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.Random;
-import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 600;
@@ -14,8 +13,7 @@ public class GamePanel extends JPanel implements ActionListener {
     final int y[] = new int[GAME_UNITS];
     int bodyParts = 6;
     int applesEaten;
-    int appleX;
-    int appleY;
+    Fruta fruta;
     char direction = 'R';
     boolean running = false;
     Timer timer;
@@ -31,8 +29,15 @@ public class GamePanel extends JPanel implements ActionListener {
         startGame();
     }
 
+    public void newFruta()  {
+        int x = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
+        int y = random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE;
+
+        fruta = new Maca(x , y);
+    }
+
     public void startGame() {
-        newApple();
+        newFruta();
         running = true;
         timer = new Timer(DELAY, this);
         timer.start();
@@ -47,6 +52,11 @@ public class GamePanel extends JPanel implements ActionListener {
         for(int i = 0; i < SCREEN_HEIGHT/UNIT_SIZE; i++) {
             g.drawLine(i*UNIT_SIZE, 0, i*UNIT_SIZE, SCREEN_HEIGHT);
             g.drawLine(0, i*UNIT_SIZE, SCREEN_WIDTH, i*UNIT_SIZE);
+        }
+
+        if(fruta != null)   {
+            g.setColor(Color.red);
+            g.fillOval(fruta.getX(), fruta.getY(), UNIT_SIZE, UNIT_SIZE);
         }
 
         for (int i = 0; i < bodyParts; i++) {
