@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 public abstract class Fruta {
     protected int x;
     protected int y;
@@ -14,4 +15,6 @@ public abstract class Fruta {
     public int getPontos() { return pontos; }
 
     public abstract void efeito(GamePanel game);
+
+    public abstract void desenhar(Graphics g);
 }
