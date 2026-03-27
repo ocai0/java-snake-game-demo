@@ -97,7 +97,12 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public void checkApple() {}
+    public void checkApple() {
+        if((x[0] == fruta.getX()) &&  (y[0] == fruta.getY()))   {
+            fruta.efeito(this);
+            newFruta();
+        }
+    }
 
     public void checkCollisions() {
         // head collides w/ body
