@@ -1,9 +1,9 @@
 import java.awt.Graphics;
 import java.awt.Color;
 
-public class Maca extends Fruta {
+public class Banana extends Fruta {
 
-    public Maca(int x, int y) {
+    public Banana(int x, int y) {
         super(x, y, 10);
     }
     
@@ -11,12 +11,12 @@ public class Maca extends Fruta {
     public void efeito(GamePanel game) {
         game.bodyParts++;
         game.applesEaten++;
-        System.out.println("Maçã consumida: +1 no tamanho da cobra");
+        System.out.println("Banana consumida: +1 no tamanho da cobra");
     }
 
     @Override
     public void desenhar(Graphics g) {
-        g.setColor(Color.red);
+        g.setColor(Color.yellow);
         g.fillOval(getX(), getY(), GamePanel.UNIT_SIZE, GamePanel.UNIT_SIZE);
     }
 }
