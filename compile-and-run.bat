@@ -12,4 +12,4 @@ if %errorlevel% neq 0 (
 )
 CLS
 echo Iniciando "SnakeGame"
-java -cp bin SnakeGame
+java -cp bin Main
