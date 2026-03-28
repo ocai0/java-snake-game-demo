@@ -80,6 +80,10 @@ public class Snake {
         }
     }
 
+    public void grow() {
+        bodyParts++;
+    }
+
     public void checkScreenCollisions() {
         // collides w/ left border
         if (x[0] < 0) killPlayer();
