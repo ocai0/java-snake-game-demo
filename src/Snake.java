@@ -67,21 +67,19 @@ public class Snake {
         checkCollisions();
     }
 
+    public void grow() {
+        bodyParts++;
+    }
+
     public void checkCollisions() {
-        checkBodyCollision();
+        checkBodyCollisions();
         checkScreenCollisions();
     }
 
-    public void checkBodyCollision() {
+    public void checkBodyCollisions() {
         for (int i = bodyParts; i > 0; i--) {
-            if ((x[0] == x[i]) && (y[0] == y[i])) {
-                killPlayer();
-            }
+            if ((x[0] == x[i]) && (y[0] == y[i])) killPlayer();
         }
-    }
-
-    public void grow() {
-        bodyParts++;
     }
 
     public void checkScreenCollisions() {
@@ -94,7 +92,6 @@ public class Snake {
         // collides w/ bottom border
         if (y[0] > GamePanel.SCREEN_HEIGHT) killPlayer();
     }
-
 
     public KeyAdapter bindControls() {
         return new PlayerControls(this);

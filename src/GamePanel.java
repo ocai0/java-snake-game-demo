@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.Random;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 600;
@@ -9,7 +10,7 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
     static final int DELAY = 75;
-    Fruta fruta;
+    ArrayList<Fruta> frutas = new ArrayList<Fruta>();
     Snake player;
     int applesEaten;
     boolean running = false;
@@ -26,21 +27,21 @@ public class GamePanel extends JPanel implements ActionListener {
         startGame();
     }
 
-    public void newFruta() {
+    public void generateFruit() {
         int x = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
         int y = random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE;
 
         int tipo = random.nextInt(2); // 0 ou 1
 
         if (tipo == 0) {
-            fruta = new Maca(x, y);
+            frutas.add(new Maca(x, y));
         } else {
-            fruta = new Banana(x, y);
+            frutas.add(new Banana(x, y));
         }
     }
 
     public void startGame() {
-        newFruta();
+        generateFruit();
         running = true;
         timer = new Timer(DELAY, this);
         timer.start();
@@ -53,8 +54,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void draw(Graphics g) {
         if (running) {
-            if (fruta != null) {
-                fruta.desenhar(g);
+            if (frutas.size() != 0) {
+                for(Fruta fruta : frutas) fruta.desenhar(g);
             }
 
             player.draw(g);
@@ -64,20 +65,14 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public void newApple() {
-
-    }
-
-    public void checkApple() {
-        if ((player.getHeadXPos() == fruta.getX()) && (player.getHeadYPos() == fruta.getY())) {
-            fruta.efeito(this);
-            newFruta();
+    public void checkPlayerAndFruitCollisions() {
+        for(Fruta fruta : frutas) {
+            if ((player.getHeadXPos() == fruta.getX()) && (player.getHeadYPos() == fruta.getY())) {
+                fruta.efeito(this);
+                frutas.remove(fruta);
+                generateFruit();
+            }
         }
-    }
-
-    public void checkCollisions() {
-        if (player.isDead()) timer.stop();
-
     }
 
     public void gameOver(Graphics g) {
@@ -100,7 +95,8 @@ public class GamePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (running) {
             player.update();
-            checkApple();
+            checkPlayerAndFruitCollisions();
+            if (player.isDead()) timer.stop();
         }
         repaint();
     }
