@@ -3,6 +3,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.function.BiFunction;
+import java.util.List;
 
 public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 600;
@@ -10,6 +12,10 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
     static final int DELAY = 75;
+    private final List<BiFunction<Integer, Integer, Fruta>> FRUITS_TYPES = List.of(
+        Maca::new,
+        Banana::new
+    );
     ArrayList<Fruta> frutas = new ArrayList<Fruta>();
     Snake player;
     int applesEaten;
@@ -30,14 +36,10 @@ public class GamePanel extends JPanel implements ActionListener {
     public void generateFruit() {
         int x = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
         int y = random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE;
+        int i = random.nextInt(FRUITS_TYPES.size());
 
-        int tipo = random.nextInt(2); // 0 ou 1
-
-        if (tipo == 0) {
-            frutas.add(new Maca(x, y));
-        } else {
-            frutas.add(new Banana(x, y));
-        }
+        Fruta novaFruta = FRUITS_TYPES.get(i).apply(x, y);
+        frutas.add(novaFruta);
     }
 
     public void startGame() {
