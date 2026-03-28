@@ -29,12 +29,18 @@ public class GamePanel extends JPanel implements ActionListener {
         startGame();
     }
 
-    public void newFruta()  {
-        int x = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
-        int y = random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE;
+    public void newFruta() {
+    int x = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
+    int y = random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE;
 
-        fruta = new Maca(x , y);
+    int tipo = random.nextInt(2); // 0 ou 1
+
+    if (tipo == 0) {
+        fruta = new Maca(x, y);
+    } else {
+        fruta = new Banana(x, y);
     }
+}
 
     public void startGame() {
         newFruta();
@@ -55,8 +61,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         if(fruta != null)   {
-            g.setColor(Color.red);
-            g.fillOval(fruta.getX(), fruta.getY(), UNIT_SIZE, UNIT_SIZE);
+            fruta.desenhar(g);
         }
 
         for (int i = 0; i < bodyParts; i++) {
