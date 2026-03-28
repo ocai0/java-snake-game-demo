@@ -9,12 +9,9 @@ public abstract class Fruta {
         this.y = y;
         this.pontos = pontos;
     }
-
     public int getX() { return x; }
     public int getY() { return y; }
     public int getPontos() { return pontos; }
-
     public abstract void efeito(GamePanel game);
-
     public abstract void desenhar(Graphics g);
 }
