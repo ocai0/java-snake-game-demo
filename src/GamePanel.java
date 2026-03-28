@@ -83,14 +83,24 @@ public class GamePanel extends JPanel implements ActionListener {
         g.setFont(new Font("Ink Free", Font.BOLD, 75));
         FontMetrics metrics = getFontMetrics(g.getFont());
         g.drawString("Game Over", (SCREEN_WIDTH - metrics.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 2);
+        
+        g.setFont(new Font("Ink Free", Font.BOLD, 40));
+        g.drawString(
+            "Score: " + applesEaten,
+            (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2,
+            g.getFont().getSize()
+        );
     }
 
     public void drawScore(Graphics g) {
         g.setColor(Color.red);
         g.setFont(new Font("Ink Free", Font.BOLD, 40));
         FontMetrics metrics = getFontMetrics(g.getFont());
-        g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2,
-                g.getFont().getSize());
+        g.drawString(
+            "Score: " + applesEaten,
+            (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2,
+            g.getFont().getSize()
+        );
     }
 
     @Override
@@ -98,7 +108,10 @@ public class GamePanel extends JPanel implements ActionListener {
         if (running) {
             player.update();
             checkPlayerAndFruitCollisions();
-            if (player.isDead()) timer.stop();
+            if(player.isDead()) {
+                running = false;
+                timer.stop();
+            }
         }
         repaint();
     }
