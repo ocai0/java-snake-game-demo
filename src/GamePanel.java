@@ -22,14 +22,13 @@ public class GamePanel extends JPanel implements ActionListener {
     boolean running = false;
     Timer timer;
     Random random;
+    KeyAdapter playerControls;
 
     GamePanel() {
         random = new Random();
-        player = new Snake();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
-        this.addKeyListener(player.bindControls());
         startGame();
     }
 
@@ -45,6 +44,9 @@ public class GamePanel extends JPanel implements ActionListener {
     public void startGame() {
         generateFruit();
         running = true;
+        player = new Snake();
+        playerControls = player.bindControls();
+        this.addKeyListener(playerControls);
         timer = new Timer(DELAY, this);
         timer.start();
     }
@@ -59,7 +61,6 @@ public class GamePanel extends JPanel implements ActionListener {
             if (frutas.size() != 0) {
                 for(Fruta fruta : frutas) fruta.desenhar(g);
             }
-
             player.draw(g);
             drawScore(g);
         } else {
@@ -78,6 +79,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void gameOver(Graphics g) {
+        
         // Game Over text
         g.setColor(Color.red);
         g.setFont(new Font("Ink Free", Font.BOLD, 75));
@@ -110,7 +112,14 @@ public class GamePanel extends JPanel implements ActionListener {
             checkPlayerAndFruitCollisions();
             if(player.isDead()) {
                 running = false;
+            }
+        }
+        else {
+            if(player.isDead() && player.wantsToResetGame()) {
                 timer.stop();
+                frutas.clear();
+                this.removeKeyListener(playerControls);
+                startGame();
             }
         }
         repaint();

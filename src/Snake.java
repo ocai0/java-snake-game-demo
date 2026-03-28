@@ -10,6 +10,15 @@ public class Snake {
     boolean alive = true;
     final int x[] = new int[GamePanel.GAME_UNITS];
     final int y[] = new int[GamePanel.GAME_UNITS];
+    boolean wantsToReset = false;
+
+    public boolean wantsToResetGame() {
+        if(wantsToReset) {
+            wantsToReset = false;
+            return true;
+        }
+        return false;
+    }
 
     private void killPlayer() {
         alive = false;
@@ -121,6 +130,9 @@ class PlayerControls extends KeyAdapter {
             case KeyEvent.VK_DOWN:
                 if (player.direction != 'D' && player.direction != 'U')
                     player.direction = 'D';
+                break;
+            case KeyEvent.VK_ENTER:
+                player.wantsToReset = true;
                 break;
         }
     }
