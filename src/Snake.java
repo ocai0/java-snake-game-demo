@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Color;
 
 public class Snake {
-    int applesEaten;
     char direction = 'R';
     int bodyParts = 6;
     boolean alive = true;

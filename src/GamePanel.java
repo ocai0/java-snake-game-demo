@@ -18,7 +18,7 @@ public class GamePanel extends JPanel implements ActionListener {
     );
     ArrayList<Fruta> frutas = new ArrayList<Fruta>();
     Snake player;
-    int applesEaten;
+    int score;
     boolean running = false;
     Timer timer;
     Random random;
@@ -87,10 +87,21 @@ public class GamePanel extends JPanel implements ActionListener {
         g.drawString("Game Over", (SCREEN_WIDTH - metrics.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 2);
         
         g.setFont(new Font("Ink Free", Font.BOLD, 40));
+        metrics = getFontMetrics(g.getFont());
         g.drawString(
-            "Score: " + applesEaten,
-            (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2,
-            g.getFont().getSize()
+            "Score: " + score,
+            (SCREEN_WIDTH - metrics.stringWidth("Score: " + score)) / 2,
+            g.getFont().getSize() + 320
+        );
+        
+        g.setFont(new Font("Ink Free", Font.BOLD, 32));
+        g.setColor(Color.WHITE);
+        metrics = getFontMetrics(g.getFont());
+        String text = "Pressione ENTER para jogar";
+        g.drawString(
+            text,
+            (SCREEN_WIDTH - metrics.stringWidth(text)) / 2,
+            g.getFont().getSize() + 380
         );
     }
 
@@ -99,8 +110,8 @@ public class GamePanel extends JPanel implements ActionListener {
         g.setFont(new Font("Ink Free", Font.BOLD, 40));
         FontMetrics metrics = getFontMetrics(g.getFont());
         g.drawString(
-            "Score: " + applesEaten,
-            (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2,
+            "Score: " + score,
+            (SCREEN_WIDTH - metrics.stringWidth("Score: " + score)) / 2,
             g.getFont().getSize()
         );
     }
@@ -118,6 +129,7 @@ public class GamePanel extends JPanel implements ActionListener {
             if(player.isDead() && player.wantsToResetGame()) {
                 timer.stop();
                 frutas.clear();
+                score = 0;
                 this.removeKeyListener(playerControls);
                 startGame();
             }

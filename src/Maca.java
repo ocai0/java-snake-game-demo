@@ -21,7 +21,7 @@ public class Maca extends Fruta {
     @Override
     public void efeito(GamePanel game) {
         game.player.grow();
-        game.applesEaten++;
+        game.score += pontos;
     }
 
     @Override
