@@ -18,18 +18,17 @@ public class GamePanel extends JPanel implements ActionListener {
     );
     ArrayList<Fruta> frutas = new ArrayList<Fruta>();
     Snake player;
-    int applesEaten;
+    int score;
     boolean running = false;
     Timer timer;
     Random random;
+    KeyAdapter playerControls;
 
     GamePanel() {
         random = new Random();
-        player = new Snake();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
-        this.addKeyListener(player.bindControls());
         startGame();
     }
 
@@ -45,6 +44,9 @@ public class GamePanel extends JPanel implements ActionListener {
     public void startGame() {
         generateFruit();
         running = true;
+        player = new Snake();
+        playerControls = player.bindControls();
+        this.addKeyListener(playerControls);
         timer = new Timer(DELAY, this);
         timer.start();
     }
@@ -59,7 +61,6 @@ public class GamePanel extends JPanel implements ActionListener {
             if (frutas.size() != 0) {
                 for(Fruta fruta : frutas) fruta.desenhar(g);
             }
-
             player.draw(g);
             drawScore(g);
         } else {
@@ -78,19 +79,41 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void gameOver(Graphics g) {
+        
         // Game Over text
         g.setColor(Color.red);
         g.setFont(new Font("Ink Free", Font.BOLD, 75));
         FontMetrics metrics = getFontMetrics(g.getFont());
         g.drawString("Game Over", (SCREEN_WIDTH - metrics.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 2);
+        
+        g.setFont(new Font("Ink Free", Font.BOLD, 40));
+        metrics = getFontMetrics(g.getFont());
+        g.drawString(
+            "Score: " + score,
+            (SCREEN_WIDTH - metrics.stringWidth("Score: " + score)) / 2,
+            g.getFont().getSize() + 320
+        );
+        
+        g.setFont(new Font("Ink Free", Font.BOLD, 32));
+        g.setColor(Color.WHITE);
+        metrics = getFontMetrics(g.getFont());
+        String text = "Pressione ENTER para jogar";
+        g.drawString(
+            text,
+            (SCREEN_WIDTH - metrics.stringWidth(text)) / 2,
+            g.getFont().getSize() + 380
+        );
     }
 
     public void drawScore(Graphics g) {
         g.setColor(Color.red);
         g.setFont(new Font("Ink Free", Font.BOLD, 40));
         FontMetrics metrics = getFontMetrics(g.getFont());
-        g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2,
-                g.getFont().getSize());
+        g.drawString(
+            "Score: " + score,
+            (SCREEN_WIDTH - metrics.stringWidth("Score: " + score)) / 2,
+            g.getFont().getSize()
+        );
     }
 
     @Override
@@ -98,7 +121,18 @@ public class GamePanel extends JPanel implements ActionListener {
         if (running) {
             player.update();
             checkPlayerAndFruitCollisions();
-            if (player.isDead()) timer.stop();
+            if(player.isDead()) {
+                running = false;
+            }
+        }
+        else {
+            if(player.isDead() && player.wantsToResetGame()) {
+                timer.stop();
+                frutas.clear();
+                score = 0;
+                this.removeKeyListener(playerControls);
+                startGame();
+            }
         }
         repaint();
     }

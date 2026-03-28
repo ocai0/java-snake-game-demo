@@ -9,7 +9,7 @@ public class Banana extends Fruta {
     protected BufferedImage sprite;
 
     public Banana(int x, int y) {
-        super(x, y, 10);
+        super(x, y, 15);
         try {
             this.sprite = ImageIO.read(new File("./src/sprites/banana.png"));
         }
@@ -21,7 +21,7 @@ public class Banana extends Fruta {
     @Override
     public void efeito(GamePanel game) {
         game.player.grow();
-        game.applesEaten++;
+        game.score += pontos;
     }
 
     @Override
