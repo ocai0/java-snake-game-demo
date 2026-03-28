@@ -20,7 +20,7 @@ public class Banana extends Fruta {
     
     @Override
     public void efeito(GamePanel game) {
-        game.bodyParts++;
+        game.player.grow();
         game.applesEaten++;
     }
 
